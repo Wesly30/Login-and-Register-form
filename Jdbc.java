@@ -1,18 +1,21 @@
+//Importing necessary Packages
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.*;
+import java.sql.*;                                                                        
 
 public class Jdbc extends JFrame {
+    //Using JFrame adding the textfield and buttons for both Login and Register
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton registerButton;
-    private JButton loginButton;
+    private JButton loginButton;                                                                                       
 
     public Jdbc() {
         setTitle("Registration and Login");
+        //Using flowlayout for the Jframe with specified size
         setSize(300, 150);
-        setLayout(new FlowLayout(FlowLayout.CENTER));
+        setLayout(new FlowLayout(FlowLayout.CENTER));                                    
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -27,12 +30,14 @@ public class Jdbc extends JFrame {
         panel.add(passwordField);
 
         registerButton = new JButton("Register");
-        registerButton.addActionListener((ActionEvent e) -> {
+        //Adding ActionListener for the Register Button
+        registerButton.addActionListener((ActionEvent e) -> {                
             registerUser();
         });
         panel.add(registerButton);
 
         loginButton = new JButton("Login");
+        //Adding ActionListener for the Login Button
         loginButton.addActionListener((ActionEvent e) -> {
             loginUser();
         });
@@ -47,7 +52,8 @@ public class Jdbc extends JFrame {
         String password = new String(passwordChars);
 
         try {
-            try (Connection connection = DriverManager.getConnection("jdbc:mysql://root@localhost:3306/mysql", "root", "30April*")) {
+            //Here's Where we try to connect our database and store our username and password inour specified table in the database.
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://root@localhost:3306/mysql", "root", "******")) {
                 String query = "INSERT INTO users(usernames, password) VALUES (?, ?)";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                     preparedStatement.setString(1, username);
@@ -68,7 +74,8 @@ public class Jdbc extends JFrame {
         String password = new String(passwordChars);
 
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://root@localhost:3306/mysql", "root", "30April*");
+            //Here's Where we try to access our stored values of username and password in our database
+            Connection connection = DriverManager.getConnection("jdbc:mysql://root@localhost:3306/mysql", "root", "*******");
             String query = "SELECT * FROM users WHERE usernames = ? AND password = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
@@ -98,7 +105,7 @@ public class Jdbc extends JFrame {
 
     private void showUsernames() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://root@localhost:3306/mysql", "root", "30April*");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://root@localhost:3306/mysql", "root", "******");
             String query = "SELECT names FROM users";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -120,7 +127,7 @@ public class Jdbc extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {                          // main class where the program will get started
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 new Jdbc().setVisible(true);
